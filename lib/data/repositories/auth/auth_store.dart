@@ -12,6 +12,7 @@ class AuthStore {
   final BehaviorSubject<AuthState> _controller = BehaviorSubject<AuthState>();
 
   List<TodoModel> loggedUserTodos;
+  User user;
 
   Stream<AuthState> observeUserAuthState() {
     return _controller.stream;
@@ -21,15 +22,21 @@ class AuthStore {
 
   List<TodoModel> getUser(User user) {
     loggedUserTodos = users[user];
+    this.user = user;
     _controller.add(AuthState.LOOGED_IN);
     return loggedUserTodos;
   }
 
   List<TodoModel> addUser(User user) {
     users[user] = getFakeData(user.username);
+    this.user = user;
     loggedUserTodos = users[user];
     _controller.add(AuthState.LOOGED_IN);
     return loggedUserTodos;
+  }
+
+  void refreshUserData(List<TodoModel> models) {
+    users[user] = models;
   }
 }
 

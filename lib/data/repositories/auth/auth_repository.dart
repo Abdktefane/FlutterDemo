@@ -41,4 +41,8 @@ class AuthRepository {
   }
 
   Stream<AuthState> observeUserState() => _authStore.observeUserAuthState();
+
+  void refreshUserData(List<TodoModel> models) {
+    _authStore.refreshUserData(models);
+  }
 }

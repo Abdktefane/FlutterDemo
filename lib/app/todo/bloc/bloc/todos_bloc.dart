@@ -33,6 +33,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       title: todo.title,
     );
     _todoList[index] = newModel;
+    _authRepository.refreshUserData(_todoList);
 
     yield TodosLoadedState(_todoList);
   }
