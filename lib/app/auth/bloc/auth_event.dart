@@ -85,3 +85,9 @@ class NewAuthStateEvent extends AuthEvent with EquatableMixin {
 }
 
 class AuthLoadingEvent extends AuthEvent {}
+
+class ErrorEvent extends AuthEvent {
+  final String message;
+
+  ErrorEvent(this.message);
+}

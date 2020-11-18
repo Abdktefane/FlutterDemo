@@ -55,6 +55,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthBlocState>
       yield lodingState();
     } else if (event is NewAuthStateEvent) {
       yield NewAuthState(event.authState);
+    } else if (event is ErrorEvent) {
+      yield ErrorState(event.message);
     }
   }
 
@@ -69,18 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthBlocState>
   AuthBlocState lodingState() => AuthLoadingState();
 
   @override
-  AuthEvent errorEvent(Exception ex) {
-    // ignore: todo
-    // TODO: implement errorEvent here
-    // for add handling error in neat and consistency
-    throw UnimplementedError();
-  }
-
-  @override
-  AuthBlocState errorState(Exception ex) {
-    // ignore: todo
-    // TODO: implement errorState here
-    // for add handling error in neat and consistency
-    throw UnimplementedError();
+  AuthEvent errorEvent(TodoException ex) {
+    return ErrorEvent(ex.message);
   }
 }

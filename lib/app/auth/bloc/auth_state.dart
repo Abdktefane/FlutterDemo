@@ -18,3 +18,9 @@ class NewAuthState extends AuthBlocState {
 }
 
 class AuthLoadingState extends AuthBlocState {}
+
+class ErrorState extends AuthBlocState {
+  final String message;
+
+  ErrorState(this.message);
+}

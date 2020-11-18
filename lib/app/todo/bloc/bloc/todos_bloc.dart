@@ -4,19 +4,22 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:test_app/data/models/todo_model.dart';
+import 'package:test_app/data/repositories/auth/auth_repository.dart';
 
 part 'todos_event.dart';
 part 'todos_state.dart';
 
 @injectable
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
-  TodosBloc() : super(TodosLoadingState()) {
+  TodosBloc(this._authRepository) : super(TodosLoadingState()) {
     initialFakeValue();
   }
 
+  final AuthRepository _authRepository;
   final List<TodoModel> _todoList = <TodoModel>[];
+
   void initialFakeValue() {
-    _todoList.addAll(_getFakeData());
+    _todoList.addAll(_authRepository.todos());
     add(TodosInitialEvent());
   }
 
@@ -46,25 +49,25 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   }
 }
 
-List<TodoModel> _getFakeData() => <TodoModel>[
+List<TodoModel> getFakeData(String name) => <TodoModel>[
       TodoModel(
         id: 1,
-        title: 'title1',
-        description: 'description1',
+        title: '$name title',
+        description: '$name description',
         createdTime: DateTime.now(),
         checked: true,
       ),
       TodoModel(
         id: 2,
-        title: 'title2',
-        description: 'description2',
+        title: '$name title2',
+        description: '$name description2',
         createdTime: DateTime.now(),
         checked: false,
       ),
       TodoModel(
         id: 3,
-        title: 'title3',
-        description: 'description3',
+        title: '$name title3',
+        description: '$name description3',
         createdTime: DateTime.now(),
         checked: true,
       ),

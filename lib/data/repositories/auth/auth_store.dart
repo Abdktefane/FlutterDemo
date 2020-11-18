@@ -1,22 +1,67 @@
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:test_app/app/todo/bloc/bloc/todos_bloc.dart';
+import 'package:test_app/data/models/todo_model.dart';
 
 const String token_key = 'TEST_APP_TOKEN_KEY';
 enum AuthState { LOOGED_IN, LOGGED_OUT }
 
 @injectable
 class AuthStore {
-  //For now the init value is LOGGED_OUT but we should read it from SharedPreferences or DB
-  final BehaviorSubject<AuthState> _controller =
-      BehaviorSubject<AuthState>.seeded(AuthState.LOGGED_OUT);
+  final BehaviorSubject<AuthState> _controller = BehaviorSubject<AuthState>();
 
-  void save(String token) {
-    // ignore: todo
-    // TODO _sharedPreferences.setString(token_key, token);
-    _controller.add(AuthState.LOOGED_IN);
-  }
+  List<TodoModel> loggedUserTodos;
 
   Stream<AuthState> observeUserAuthState() {
     return _controller.stream;
   }
+
+  bool isExist(User user) => users[user] != null;
+
+  List<TodoModel> getUser(User user) {
+    loggedUserTodos = users[user];
+    _controller.add(AuthState.LOOGED_IN);
+    return loggedUserTodos;
+  }
+
+  List<TodoModel> addUser(User user) {
+    users[user] = getFakeData(user.username);
+    loggedUserTodos = users[user];
+    _controller.add(AuthState.LOOGED_IN);
+    return loggedUserTodos;
+  }
+}
+
+final users = <User, List<TodoModel>>{
+  User('user1', 'user1'): [...getFakeData('user1')],
+  User('user2', 'user2'): [...getFakeData('user2')],
+};
+
+class User extends Equatable {
+  final String username;
+  final String password;
+  User(
+    this.username,
+    this.password,
+  );
+
+  User copyWith({
+    String username,
+    String password,
+  }) {
+    return User(
+      username ?? this.username,
+      password ?? this.password,
+    );
+  }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object> get props => [
+        username,
+        password,
+      ];
 }

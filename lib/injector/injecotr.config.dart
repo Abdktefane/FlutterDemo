@@ -27,10 +27,10 @@ GetIt $initGetIt(
   final gh = GetItHelper(get, environment, environmentFilter);
   gh.factory<AuthDataSource>(() => AuthDataSource());
   gh.factory<AuthStore>(() => AuthStore());
-  gh.factory<TodosBloc>(() => TodosBloc());
   gh.factory<LoginInteractor>(() => LoginInteractor(get<AuthRepository>()));
   gh.factory<ObserveAuthState>(() => ObserveAuthState(get<AuthRepository>()));
   gh.factory<SignupInteractor>(() => SignupInteractor(get<AuthRepository>()));
+  gh.factory<TodosBloc>(() => TodosBloc(get<AuthRepository>()));
   gh.factory<AuthBloc>(() => AuthBloc(
         get<LoginInteractor>(),
         get<SignupInteractor>(),

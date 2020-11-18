@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/app/auth/bloc/auth_bloc.dart';
-import 'package:test_app/app/todo/bloc/bloc/todos_bloc.dart';
-import 'package:test_app/app/todo/pages/TodoPage.dart';
-
+import 'package:test_app/app/auth/pages/login_page.dart';
 import 'injector/injecotr.dart';
 
 main() {
@@ -20,26 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TestApp'),
-      ),
-      body: Center(
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => GetIt.I<TodosBloc>()),
-            BlocProvider(create: (context) => GetIt.I<AuthBloc>()),
-          ],
-          child: TodosPage(),
-        ),
+      home: BlocProvider<AuthBloc>(
+        create: (context) => GetIt.I<AuthBloc>(),
+        child: LoginPage(),
       ),
     );
   }

@@ -11,9 +11,7 @@ mixin Collecter<E, S> on Bloc<E, S> {
 
   S lodingState();
 
-  E errorEvent(Exception ex);
-
-  S errorState(Exception ex);
+  E errorEvent(TodoException ex);
 
   collect(Stream<InvokeStatus> stream) {
     final sub = stream.listen(_manageInvokeStatus);
@@ -22,8 +20,15 @@ mixin Collecter<E, S> on Bloc<E, S> {
 
   void _manageInvokeStatus(InvokeStatus status) {
     if (status is InvokeStarted) {
+      add(lodingEvent());
     } else if (status is InvokeError) {
       add(errorEvent(status.throwable));
     }
   }
+}
+
+class TodoException implements Exception {
+  TodoException(this.message);
+
+  final String message;
 }
